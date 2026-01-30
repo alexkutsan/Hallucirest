@@ -1,0 +1,23 @@
+name: mongo_mcp_server
+version: 0.1.0
+
+description: |
+  Mongo MCP server (stdio)
+
+authors:
+  - Hallucirest contributors
+
+crystal: ">= 1.19.0"
+
+license: MIT
+
+dependencies:
+  cryomongo:
+    github: elbywan/cryomongo
+
+  mcp:
+    github: spider-gazelle/mcp.cr
+
+targets:
+  mongo_mcp_server:
+    main: src/main.cr

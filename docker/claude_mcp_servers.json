@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "redis": {
+      "type": "http",
+      "url": "http://redis_mcp_server:8001/mcp"
+    },
+    "mongo": {
+      "command": "./bin/mongo_mcp_server"
+    }
+  }
+}

@@ -1,0 +1,49 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+jobs:
+  trufflehog:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: TruffleHog
+        uses: trufflesecurity/trufflehog@v3
+        with:
+          path: ./
+
+  ci:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install Crystal
+        uses: crystal-lang/install-crystal@v1
+        with:
+          crystal: 1.19.0
+
+      - name: Install just
+        uses: extractions/setup-just@v2
+
+      - name: Install shards
+        run: shards install
+
+      - name: Format check
+        run: just format-check
+
+      - name: Lint
+        run: just lint
+
+      - name: Specs
+        run: just test-all

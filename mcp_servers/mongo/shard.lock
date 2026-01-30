@@ -1,0 +1,18 @@
+version: 2.0
+shards:
+  bson:
+    git: https://github.com/elbywan/bson.cr.git
+    version: 0.3.6
+
+  cryomongo:
+    git: https://github.com/elbywan/cryomongo.git
+    version: 0.3.12
+
+  dns:
+    git: https://github.com/spider-gazelle/dns.git
+    version: 1.2.0+git.commit.a2304fa751101c757422dff2be56e367d215bb48
+
+  mcp:
+    git: https://github.com/spider-gazelle/mcp.cr.git
+    version: 0.2.0+git.commit.d6ca3e5a3ad37e394af7cf91a2c0717f73cd232f
+

@@ -1,0 +1,30 @@
+services:
+  redis:
+    image: redis:7-alpine
+
+  mongo:
+    image: mongo:7
+
+  redis_mcp_server:
+    build: ./mcp_servers/redis
+    environment:
+      REDIS_MCP_BIND: 0.0.0.0
+      REDIS_MCP_PORT: "8001"
+      REDIS_URL: redis://redis:6379
+    command: ["./bin/redis_mcp_server"]
+    depends_on:
+      - redis
+
+  hallucirest:
+    build: .
+    environment:
+      OPENAI_API_KEY: ${OPENAI_API_KEY}
+    command: ["./bin/hallucirest", "--config", "/app/docker/config.yml"]
+    volumes:
+      - ./docker:/app/docker:ro
+    ports:
+      - "8085:8080"
+    depends_on:
+      - redis_mcp_server
+      - redis
+      - mongo

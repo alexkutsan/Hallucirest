@@ -1,0 +1,23 @@
+name: redis_mcp_server
+version: 0.1.0
+
+description: |
+  Redis MCP server (HTTP)
+
+authors:
+  - Hallucirest contributors
+
+crystal: ">= 1.19.0"
+
+license: MIT
+
+dependencies:
+  redis:
+    github: stefanwille/crystal-redis
+
+  mcp:
+    github: spider-gazelle/mcp.cr
+
+targets:
+  redis_mcp_server:
+    main: src/main.cr

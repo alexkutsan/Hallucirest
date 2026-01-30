@@ -1,0 +1,29 @@
+name: Hallucirest
+version: 0.1.0
+
+description: |
+  Hallucirest - HTTP server powered by LLM. 
+
+authors:
+  - Alexander Kutsan <alex@kutsan.com>
+
+homepage: https://github.com/alexkutsan/Hallucirest
+repository: https://github.com/alexkutsan/Hallucirest
+documentation: https://github.com/alexkutsan/Hallucirest/
+
+crystal: ">= 1.19.0"
+
+license: MIT
+
+dependencies:
+  agent_kit:
+    github: alexkutsan/AgentKit
+    branch: main
+
+development_dependencies:
+  ameba:
+    github: crystal-ameba/ameba
+
+targets:
+  hallucirest:
+    main: src/main.cr

@@ -1,0 +1,17 @@
+{
+  "name": "Crystal Development",
+  "build": {
+    "dockerfile": "Dockerfile"
+  },
+  "runArgs": ["--cap-add=SYS_PTRACE"],
+  "updateRemoteUserUID": true,
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "crystal-lang-tools.crystal-lang"
+      ]
+    }
+  },
+  "postCreateCommand": "crystal --version && shards --version && python3 -m venv /tmp/mcp-venv && /tmp/mcp-venv/bin/pip install mcp starlette uvicorn",
+  "remoteUser": "vscode"
+}
