@@ -59,7 +59,7 @@ describe "redis_mcp_server" do
       tools_body = {"jsonrpc" => "2.0", "id" => 2, "method" => "tools/list"}.to_json
       tools_resp = client.post("/mcp", headers: headers, body: tools_body)
       tools = JSON.parse(tools_resp.body)["result"]
-      names = tools["tools"].as_a.map { |t| t["name"].as_s }
+      names = tools["tools"].as_a.map(&.["name"].as_s)
       names.includes?("redis_get").should be_true
       names.includes?("redis_set").should be_true
       names.includes?("redis_del").should be_true

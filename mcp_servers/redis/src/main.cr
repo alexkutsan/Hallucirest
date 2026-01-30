@@ -70,7 +70,7 @@ module RedisMcpServer
     private def handle_mcp_post(context : HTTP::Server::Context) : Nil
       session_id = context.request.headers[MCP_SESSION_ID_HEADER]?
 
-      transport = if (sid = session_id)
+      transport = if sid = session_id
                     @mutex.synchronize { @transports[sid]? }
                   else
                     MCP::Server::StreamableHttpServerTransport.new(true, true)
@@ -161,7 +161,7 @@ module RedisMcpServer
         description: "Set a value for a key",
         input_schema: MCP::Protocol::Tool::Input.new(
           properties: {
-            "key" => JSON::Any.new({"type" => JSON::Any.new("string")}),
+            "key"   => JSON::Any.new({"type" => JSON::Any.new("string")}),
             "value" => JSON::Any.new({"type" => JSON::Any.new("string")}),
           },
           required: ["key", "value"]

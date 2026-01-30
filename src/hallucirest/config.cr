@@ -73,7 +73,7 @@ module Hallucirest
     end
 
     private def self.expand_env_placeholders(input : String, env : Hash(String, String)) : String
-      input.gsub(/\$\{([A-Z0-9_]+)(:-([^}]*))?\}/) do |match|
+      input.gsub(/\$\{([A-Z0-9_]+)(:-([^}]*))?\}/) do |_|
         var = $1
         default = $3?
         env[var]? || default || ""

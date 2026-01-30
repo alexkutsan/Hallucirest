@@ -19,7 +19,7 @@ describe "mongo_mcp_server" do
       init["serverInfo"]["name"].as_s.should eq("mongo_mcp_server")
 
       tools = client.request(2, "tools/list")
-      names = tools["tools"].as_a.map { |t| t["name"].as_s }
+      names = tools["tools"].as_a.map(&.["name"].as_s)
       names.includes?("mongo_find").should be_true
       names.includes?("mongo_insert_one").should be_true
       names.includes?("mongo_delete_all").should be_true

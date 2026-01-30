@@ -37,7 +37,7 @@ module MongoMcpServer
         description: "List documents in a collection",
         input_schema: MCP::Protocol::Tool::Input.new(
           properties: {
-            "db" => JSON::Any.new({"type" => JSON::Any.new("string")}),
+            "db"         => JSON::Any.new({"type" => JSON::Any.new("string")}),
             "collection" => JSON::Any.new({"type" => JSON::Any.new("string")}),
           },
           required: ["db", "collection"]
@@ -65,9 +65,9 @@ module MongoMcpServer
         description: "Insert one document into a collection",
         input_schema: MCP::Protocol::Tool::Input.new(
           properties: {
-            "db" => JSON::Any.new({"type" => JSON::Any.new("string")}),
+            "db"         => JSON::Any.new({"type" => JSON::Any.new("string")}),
             "collection" => JSON::Any.new({"type" => JSON::Any.new("string")}),
-            "document" => JSON::Any.new({"type" => JSON::Any.new("object")}),
+            "document"   => JSON::Any.new({"type" => JSON::Any.new("object")}),
           },
           required: ["db", "collection", "document"]
         )
@@ -95,7 +95,7 @@ module MongoMcpServer
         description: "Delete all documents from a collection",
         input_schema: MCP::Protocol::Tool::Input.new(
           properties: {
-            "db" => JSON::Any.new({"type" => JSON::Any.new("string")}),
+            "db"         => JSON::Any.new({"type" => JSON::Any.new("string")}),
             "collection" => JSON::Any.new({"type" => JSON::Any.new("string")}),
           },
           required: ["db", "collection"]
