@@ -17,9 +17,11 @@ jobs:
           fetch-depth: 0
 
       - name: TruffleHog
-        uses: trufflesecurity/trufflehog@v3
+        uses: trufflesecurity/trufflehog@main
         with:
           path: ./
+          base: ""
+          extra_args: --only-verified
 
   ci:
     runs-on: ubuntu-latest
