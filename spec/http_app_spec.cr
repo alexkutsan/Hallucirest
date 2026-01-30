@@ -31,7 +31,7 @@ module Hallucirest
       response.close
 
       runner.last_prompt.should_not be_nil
-      runner.last_prompt.not_nil!.includes?("GET /about HTTP/1.1").should be_true
+      runner.last_prompt.try(&.includes?("GET /about HTTP/1.1")).should be_true
 
       io.to_s.includes?("HTTP/1.1 200").should be_true
       io.to_s.includes?("hello from runner").should be_true

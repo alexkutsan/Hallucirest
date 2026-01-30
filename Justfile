@@ -28,7 +28,7 @@ test-mongo:
 test-all: test-root test-redis test-mongo
 
 lint: install
-  ./bin/ameba
+  ./bin/ameba src spec mcp_servers/redis/src mcp_servers/redis/spec mcp_servers/mongo/src mcp_servers/mongo/spec
 
 format:
   crystal tool format src spec mcp_servers/redis/src mcp_servers/redis/spec mcp_servers/mongo/src mcp_servers/mongo/spec

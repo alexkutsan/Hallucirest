@@ -84,8 +84,7 @@ module RedisMcpServer
 
       transport.on_close do
         if sid = transport.session_id
-          sid_str = sid.not_nil!
-          @mutex.synchronize { @transports.delete(sid_str) }
+          @mutex.synchronize { @transports.delete(sid) }
         end
       end
 
@@ -93,8 +92,7 @@ module RedisMcpServer
       transport.handle_post_request(context)
 
       if sid = transport.session_id
-        sid_str = sid.not_nil!
-        @mutex.synchronize { @transports[sid_str] = transport }
+        @mutex.synchronize { @transports[sid] = transport }
       end
     end
 

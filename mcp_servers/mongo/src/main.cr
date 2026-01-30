@@ -32,6 +32,12 @@ module MongoMcpServer
     end
 
     private def register_tools(server : MCP::Server::Server) : Nil
+      register_find_tool(server)
+      register_insert_one_tool(server)
+      register_delete_all_tool(server)
+    end
+
+    private def register_find_tool(server : MCP::Server::Server) : Nil
       server.add_tool(
         name: "mongo_find",
         description: "List documents in a collection",
@@ -59,7 +65,9 @@ module MongoMcpServer
           tool_result([ex.message || "Mongo error"], is_error: true)
         end
       end
+    end
 
+    private def register_insert_one_tool(server : MCP::Server::Server) : Nil
       server.add_tool(
         name: "mongo_insert_one",
         description: "Insert one document into a collection",
@@ -89,7 +97,9 @@ module MongoMcpServer
           tool_result([ex.message || "Mongo error"], is_error: true)
         end
       end
+    end
 
+    private def register_delete_all_tool(server : MCP::Server::Server) : Nil
       server.add_tool(
         name: "mongo_delete_all",
         description: "Delete all documents from a collection",

@@ -42,19 +42,16 @@ describe "redis_mcp_server" do
 
       ready.should be_true
 
-      session = nil
-
       init_params = JSON.parse(%({"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"spec","version":"0"}}))
       init_body = {"jsonrpc" => "2.0", "id" => 1, "method" => "initialize", "params" => init_params}.to_json
       init_resp = client.post("/mcp", headers: HTTP::Headers{"Content-Type" => "application/json", "Accept" => "application/json, text/event-stream"}, body: init_body)
       init_resp.status_code.should eq(200)
-      session = init_resp.headers["Mcp-Session-Id"]?
-      session.should_not be_nil
+      session = init_resp.headers["Mcp-Session-Id"]? || raise "Missing Mcp-Session-Id"
 
       init_json = JSON.parse(init_resp.body)
       init_json["result"]["serverInfo"]["name"].as_s.should eq("redis_mcp_server")
 
-      headers = HTTP::Headers{"Content-Type" => "application/json", "Accept" => "application/json, text/event-stream", "Mcp-Session-Id" => session.not_nil!}
+      headers = HTTP::Headers{"Content-Type" => "application/json", "Accept" => "application/json, text/event-stream", "Mcp-Session-Id" => session}
 
       tools_body = {"jsonrpc" => "2.0", "id" => 2, "method" => "tools/list"}.to_json
       tools_resp = client.post("/mcp", headers: headers, body: tools_body)

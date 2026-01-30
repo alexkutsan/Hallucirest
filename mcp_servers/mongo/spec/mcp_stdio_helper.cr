@@ -74,7 +74,6 @@ class MCPStdioClient
       remaining = deadline - Time.instant
       raise "MCP server timeout" if remaining <= 0.seconds
 
-      line = ""
       ch = Channel(String).new(1)
       spawn do
         begin
