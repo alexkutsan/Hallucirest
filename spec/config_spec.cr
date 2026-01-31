@@ -66,6 +66,72 @@ module Hallucirest
       end
     end
 
+    it "fails when port is not positive" do
+      yaml = <<-YAML
+      bind: 0.0.0.0
+      port: 0
+      agentkit:
+        openai_api_key: k
+      YAML
+
+      expect_raises(ArgumentError, "PORT must be positive") do
+        AppConfig.from_yaml(yaml)
+      end
+    end
+
+    it "fails when max iterations is not positive" do
+      yaml = <<-YAML
+      bind: 0.0.0.0
+      port: 8080
+      agentkit:
+        openai_api_key: k
+        max_iterations: 0
+      YAML
+
+      expect_raises(ArgumentError, "MAX_ITERATIONS must be positive") do
+        AppConfig.from_yaml(yaml)
+      end
+    end
+
+    it "fails when timeout seconds is not positive" do
+      yaml = <<-YAML
+      bind: 0.0.0.0
+      port: 8080
+      agentkit:
+        openai_api_key: k
+        timeout_seconds: 0
+      YAML
+
+      expect_raises(ArgumentError, "TIMEOUT_SECONDS must be positive") do
+        AppConfig.from_yaml(yaml)
+      end
+    end
+
+    it "loads config from file" do
+      base = Dir.tempdir
+      dir = File.join(base, "hallucirest_spec_#{Random::Secure.hex(8)}")
+      Dir.mkdir(dir)
+
+      begin
+        path = File.join(dir, "config.yml")
+        yaml = <<-YAML
+        bind: 127.0.0.1
+        port: 9090
+        agentkit:
+          openai_api_key: k
+        YAML
+
+        File.write(path, yaml)
+
+        cfg = AppConfig.from_file(path)
+        cfg.bind_host.should eq("127.0.0.1")
+        cfg.port.should eq(9090)
+        cfg.openai_api_key.should eq("k")
+      ensure
+        FileUtils.rm_r(dir)
+      end
+    end
+
     it "(legacy) supports ENV-based config" do
       env = {
         "OPENAI_API_KEY" => "k",
@@ -73,6 +139,27 @@ module Hallucirest
 
       cfg = AppConfig.from_env(env)
       cfg.openai_api_key.should eq("k")
+    end
+
+    it "(legacy) parses MCP_SERVERS_JSON from env" do
+      env = {
+        "OPENAI_API_KEY" => "k",
+        "MCP_SERVERS_JSON" => %({"tools":{"type":"http","url":"http://env"}}),
+      }
+
+      cfg = AppConfig.from_env(env)
+      cfg.mcp_servers["tools"].url.should eq("http://env")
+    end
+
+    it "(legacy) fails on invalid MCP_SERVERS_JSON" do
+      env = {
+        "OPENAI_API_KEY" => "k",
+        "MCP_SERVERS_JSON" => "{not json}",
+      }
+
+      expect_raises(JSON::ParseException) do
+        AppConfig.from_env(env)
+      end
     end
 
     it "loads MCP servers from JSON file and merges with inline YAML" do
@@ -102,6 +189,80 @@ module Hallucirest
       ensure
         FileUtils.rm_r(dir)
       end
+    end
+
+    it "fails when MCP JSON file does not exist" do
+      yaml = <<-YAML
+      bind: 127.0.0.1
+      port: 8080
+      agentkit:
+        openai_api_key: k
+        mcp_servers_json_path: /definitely/does/not/exist.json
+      YAML
+
+      expect_raises(File::NotFoundError) do
+        AppConfig.from_yaml(yaml)
+      end
+    end
+
+    it "fails when MCP JSON file is invalid" do
+      base = Dir.tempdir
+      dir = File.join(base, "hallucirest_spec_#{Random::Secure.hex(8)}")
+      Dir.mkdir(dir)
+
+      begin
+        json_path = File.join(dir, "mcp.json")
+        File.write(json_path, "{not json}")
+
+        yaml = <<-YAML
+        bind: 127.0.0.1
+        port: 8080
+        agentkit:
+          openai_api_key: k
+          mcp_servers_json_path: #{json_path}
+        YAML
+
+        expect_raises(JSON::ParseException) do
+          AppConfig.from_yaml(yaml)
+        end
+      ensure
+        FileUtils.rm_r(dir)
+      end
+    end
+
+    it "expands missing env placeholders to empty string" do
+      env = {
+        "OPENAI_API_KEY" => "k",
+      }
+
+      yaml = <<-YAML
+      bind: 0.0.0.0
+      port: 8080
+      system_prompt: Hello${MISSING}World
+      agentkit:
+        openai_api_key: ${OPENAI_API_KEY}
+      YAML
+
+      cfg = AppConfig.from_yaml(yaml, env)
+      cfg.system_prompt.should eq("HelloWorld")
+    end
+
+    it "expands multiple placeholders in YAML" do
+      env = {
+        "OPENAI_API_KEY" => "k",
+        "A" => "a",
+      }
+
+      yaml = <<-YAML
+      bind: 0.0.0.0
+      port: 8080
+      system_prompt: ${A}-${B:-b}
+      agentkit:
+        openai_api_key: ${OPENAI_API_KEY}
+      YAML
+
+      cfg = AppConfig.from_yaml(yaml, env)
+      cfg.system_prompt.should eq("a-b")
     end
   end
 end
