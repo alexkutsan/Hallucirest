@@ -1,11 +1,11 @@
 # Hallucirest
 
-An HTTP server whose runtime is controlled by an LLM.
+A fun vacation project: an HTTP server where the LLM decides what to respond. Not meant for production — just a playground to see what happens when you let an AI handle your HTTP requests.
 
 ## What it does
 
 - **[Prompt-in]** An incoming HTTP request becomes a prompt.
-- **[Agent loop]** Runs an agent loop via `AgentKit`.
+- **[Agent loop]** Runs an agent loop via [`AgentKit`](https://github.com/alexkutsan/AgentKit).
 - **[Tools]** Can connect to MCP servers and expose their tools to the agent.
 - **[Response-out]** The final LLM output becomes the HTTP response.
 
@@ -23,7 +23,7 @@ An HTTP server whose runtime is controlled by an LLM.
 
 - Crystal `>= 1.19.0`
 - Shards
-- `AgentKit` (added as a shard dependency)
+- [`AgentKit`](https://github.com/alexkutsan/AgentKit)
 
 ## Quick start (Docker Compose)
 
