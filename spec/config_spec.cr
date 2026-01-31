@@ -143,7 +143,7 @@ module Hallucirest
 
     it "(legacy) parses MCP_SERVERS_JSON from env" do
       env = {
-        "OPENAI_API_KEY" => "k",
+        "OPENAI_API_KEY"   => "k",
         "MCP_SERVERS_JSON" => %({"tools":{"type":"http","url":"http://env"}}),
       }
 
@@ -153,7 +153,7 @@ module Hallucirest
 
     it "(legacy) fails on invalid MCP_SERVERS_JSON" do
       env = {
-        "OPENAI_API_KEY" => "k",
+        "OPENAI_API_KEY"   => "k",
         "MCP_SERVERS_JSON" => "{not json}",
       }
 
@@ -250,7 +250,7 @@ module Hallucirest
     it "expands multiple placeholders in YAML" do
       env = {
         "OPENAI_API_KEY" => "k",
-        "A" => "a",
+        "A"              => "a",
       }
 
       yaml = <<-YAML

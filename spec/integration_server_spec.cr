@@ -58,7 +58,7 @@ module Hallucirest
       end
 
       begin
-        until (port = server.bound_port)
+        until port = server.bound_port
           sleep 10.milliseconds
         end
 
@@ -82,7 +82,7 @@ module Hallucirest
       end
 
       begin
-        until (port = server.bound_port)
+        until port = server.bound_port
           sleep 10.milliseconds
         end
 

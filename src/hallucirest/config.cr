@@ -132,7 +132,6 @@ module Hallucirest
       raise ArgumentError.new("TIMEOUT_SECONDS must be positive") if @timeout_seconds <= 0
     end
 
-
     private def self.parse_mcp_servers(raw : String?) : Hash(String, AgentKit::MCPServerConfig)
       return {} of String => AgentKit::MCPServerConfig if raw.nil? || raw.empty?
 
