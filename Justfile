@@ -20,21 +20,29 @@ test-root:
   crystal spec
 
 test-redis:
-  env CRYSTAL_CACHE_DIR=mcp_servers/redis/.crystal_cache crystal spec mcp_servers/redis/spec/redis_mcp_server_spec.cr
+  just --justfile mcp_servers/redis/Justfile --working-directory mcp_servers/redis install
+  env CRYSTAL_CACHE_DIR=.crystal_cache just --justfile mcp_servers/redis/Justfile --working-directory mcp_servers/redis test
 
 test-mongo:
-  env CRYSTAL_CACHE_DIR=mcp_servers/mongo/.crystal_cache crystal spec mcp_servers/mongo/spec/mongo_mcp_server_spec.cr
+  just --justfile mcp_servers/mongo/Justfile --working-directory mcp_servers/mongo install
+  env CRYSTAL_CACHE_DIR=.crystal_cache just --justfile mcp_servers/mongo/Justfile --working-directory mcp_servers/mongo test
 
 test-all: test-root test-redis test-mongo
 
 lint: install
-  ./bin/ameba src spec mcp_servers/redis/src mcp_servers/redis/spec mcp_servers/mongo/src mcp_servers/mongo/spec
+  ./bin/ameba src spec
+  just --justfile mcp_servers/redis/Justfile --working-directory mcp_servers/redis lint
+  just --justfile mcp_servers/mongo/Justfile --working-directory mcp_servers/mongo lint
 
 format:
-  crystal tool format src spec mcp_servers/redis/src mcp_servers/redis/spec mcp_servers/mongo/src mcp_servers/mongo/spec
+  crystal tool format src spec
+  just --justfile mcp_servers/redis/Justfile --working-directory mcp_servers/redis format
+  just --justfile mcp_servers/mongo/Justfile --working-directory mcp_servers/mongo format
 
 format-check:
-  crystal tool format --check src spec mcp_servers/redis/src mcp_servers/redis/spec mcp_servers/mongo/src mcp_servers/mongo/spec
+  crystal tool format --check src spec
+  just --justfile mcp_servers/redis/Justfile --working-directory mcp_servers/redis format-check
+  just --justfile mcp_servers/mongo/Justfile --working-directory mcp_servers/mongo format-check
 
 secrets-scan:
   trufflehog git file://. --fail --no-update

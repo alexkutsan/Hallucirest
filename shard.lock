@@ -2,7 +2,7 @@ version: 2.0
 shards:
   agent_kit:
     git: https://github.com/alexkutsan/agentkit.git
-    version: 0.1.0+git.commit.d1a2f81412b732035e71bbe8a79cf005c5954e31
+    version: 0.1.0+git.commit.7d0bb4081e0f83ea18666079103f318479b527b9
 
   ameba:
     git: https://github.com/crystal-ameba/ameba.git

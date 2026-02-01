@@ -1,0 +1,19 @@
+ameba_bin := "../../bin/ameba"
+
+_default:
+  @just --list
+
+install:
+  shards install
+
+test:
+  crystal spec
+
+lint:
+  {{ameba_bin}} src spec
+
+format:
+  crystal tool format src spec
+
+format-check:
+  crystal tool format --check src spec

@@ -1,5 +1,8 @@
 require "spec"
-require "./mcp_stdio_helper"
+require "http/client"
+require "json"
+
+require "./mcp_stdio_helper_spec"
 
 describe "mongo_mcp_server" do
   it "supports initialize, tools/list, and insert/find/delete_all" do

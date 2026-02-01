@@ -2,11 +2,17 @@ services:
   redis:
     image: redis:7-alpine
 
-  mongo:
-    image: mongo:7
+  redis-insight:
+    image: redis/redisinsight:latest
+    ports:
+      - "5540:5540"
+    depends_on:
+      - redis
 
   redis_mcp_server:
     build: ./mcp_servers/redis
+    ports:
+      - "8001:8001"
     environment:
       REDIS_MCP_BIND: 0.0.0.0
       REDIS_MCP_PORT: "8001"
@@ -27,4 +33,4 @@ services:
     depends_on:
       - redis_mcp_server
       - redis
-      - mongo
+      

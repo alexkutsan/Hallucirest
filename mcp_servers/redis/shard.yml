@@ -15,9 +15,6 @@ dependencies:
   redis:
     github: stefanwille/crystal-redis
 
-  mcp:
-    github: spider-gazelle/mcp.cr
-
 targets:
   redis_mcp_server:
     main: src/main.cr
